@@ -272,6 +272,24 @@ void banmul(bandMatrix<double> &a, Vector<double> &x, Vector<double> &b)
 	
 }
 
+void banmul(bandMatrix<double> &a, Vector<double> &x, Vector<double> &b)
+{
+	int i,j,k = 0,loopStart,loopEnd,n=a.nrows();
+	for (i = 0; a.diag_indx(i) < 0; i++) {	}
+	int m1 = i, m2 = a.no_diag() - 1 - m1;
+
+	for (i = 0; i < n; i++)
+	{
+		b[i] = 0.0;
+		loopStart = (i < m1 ? abs(a.diag_indx(i)) : 0);
+		loopEnd = i+m2 < n ? a.no_diag() : (a.no_diag()-(n-(i+m2)));
+		for (j = loopStart; j < loopEnd; j++)
+		{
+			b[i] = b[i] + a[i][j]*x[j];
+		}
+	}
+}
+
 int main()
 {
     double element[] = { -2,   1,   3,   2,  -1,   2,
